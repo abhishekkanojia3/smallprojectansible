@@ -1,10 +1,10 @@
 #!/bin/bash
 AlarmPrefix=”autoCWalert”
-region=$(curl http://<IP>/latest/meta-data/placement/region 2>/dev/null)
-InstanceID=$(curl http://<IP>/latest/meta-data/instance-id 2>/dev/null)
-AMIID=$(curl http://<IP>/latest/meta-data/ami-id 2>/dev/null)
+region=$(curl http://169.254.169.254/latest/meta-data/placement/region 2>/dev/null)
+InstanceID=$(curl http://169.254.169.254/latest/meta-data/instance-id 2>/dev/null)
+AMIID=$(curl http://169.254.169.254/latest/meta-data/ami-id 2>/dev/null)
 EC2_NAME=$(aws ec2 describe-tags — region $region — filters “Name=resource-id,Values=$InstanceID” “Name=key,Values=Name” — output text | cut -f5)
-InstanceType=$(curl http://<IP>/latest/meta-data/instance-type 2>/dev/null)
+InstanceType=$(curl http://169.254.169.254/latest/meta-data/instance-type 2>/dev/null)
 #device=$(df -h / | awk ‘{print$1}’ | sed ‘s/dev//’ | sed ‘s/^.//’ | sed ‘s/^.//’ | tail -1)
 device=$(lsblk | egrep -i “part /” | awk ‘{print$1}’ | sed ‘s/├─//’ | head -1 | sed ‘s/└─//’)
 fstype=$(df -hT / | awk ‘{print$2}’ | tail -1)
